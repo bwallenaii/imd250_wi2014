@@ -13,6 +13,7 @@
 		private var _down:Boolean = false;
 		private var _left:Boolean = false;
 		private var _right:Boolean = false;
+		private var _shoot:Boolean = false;
 		
 		private var jumpStrength:Number = 12;
 		private var gravityModifier:Number = 1;
@@ -80,6 +81,12 @@
 			}
 			
 			super.run();
+			this.arm.run();
+			
+			if(this.shootDown)
+			{
+				this.arm.weapon.fire();
+			}
 			
 			if(this.gx < Level.LEFT_WALL)
 			{
@@ -152,6 +159,20 @@
 				//this.puppet.scaleX = 1;
 				TweenLite.to(this.puppet, 0.5, {scaleX:1*this.gravityModifier});
 				this._left = false;
+			}
+		}
+		
+		public function get shootDown():Boolean
+		{
+			return this._shoot;
+		}
+		
+		public function set shootDown(b:Boolean):void
+		{
+			this._shoot = b;
+			if(!b)
+			{
+				this.arm.weapon.resetROF();
 			}
 		}
 		

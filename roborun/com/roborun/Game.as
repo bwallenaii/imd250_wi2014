@@ -2,6 +2,7 @@
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import com.roborun.*;
 	import com.roborun.characters.*;
 	import flash.events.KeyboardEvent;
@@ -26,6 +27,8 @@
 			this.stage.focus = this.stage;
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this.keyDown);
 			this.stage.addEventListener(KeyboardEvent.KEY_UP, this.keyUp);
+			this.addEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
+			this.addEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
 			this.loadLevel();
 		}
 		
@@ -75,6 +78,16 @@
 			}
 		}
 		
+		public function mouseDown(e:* = null):void
+		{
+			Player.instance.shootDown = true;
+		}
+		
+		public function mouseUp(e:* = null):void
+		{
+			Player.instance.shootDown = false;
+		}
+		
 		public function loadLevel():void
 		{
 			this._level = new Level1();
@@ -97,11 +110,22 @@
 			this.stage.focus = this.stage;
 			Player.instance.run();
 			this.level.run();
+			Bullet.runBullets();
 		}
 		
 		private function destroy(e:* = null):void
 		{
 			this.haltGame();
+		}
+		
+		public static function degToRad(deg:Number):Number
+		{
+			return deg * Math.PI / 180;
+		}
+		
+		public static function radToDeg(rad:Number):Number
+		{
+			return rad * 180 / Math.PI;
 		}
 		
 		public function get level():Level
