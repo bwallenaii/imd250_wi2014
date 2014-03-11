@@ -8,6 +8,7 @@
 	
 	public class Main extends MovieClip
 	{
+		private static var _instance:Main;
 		public static const LANDING:String = "landing";
 		public static const INSTRUCTIONS:String = "instructions";
 		public static const GAME:String = "game";
@@ -16,6 +17,7 @@
 		
 		public function Main():void
 		{
+			_instance = this;
 			this.stop();
 			this.fListen = new FrameListener(this);
 			this.fListen.addListener(LANDING, this.buildLanding);
@@ -78,6 +80,11 @@
 		public function buildEnd():void
 		{
 			this._start.addEventListener(MouseEvent.CLICK, this.gotoLanding);
+		}
+		
+		public static function get instance():Main
+		{
+			return _instance;
 		}
 	}
 }

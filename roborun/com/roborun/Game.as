@@ -4,12 +4,17 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import com.roborun.*;
+	import com.Main;
 	import com.roborun.characters.*;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	
 	public class Game extends Sprite
 	{
+		public static const STAGE_LEFT:Number = 0;
+		public static const STAGE_RIGHT:Number = 712;
+		public static const STAGE_TOP:Number = 0;
+		public static const STAGE_BOTTOM:Number = 400;
 		private static var _instance:Game;
 		
 		private var _level:Level;
@@ -110,12 +115,18 @@
 			this.stage.focus = this.stage;
 			Player.instance.run();
 			this.level.run();
+			Enemy.runEnemies();
 			Bullet.runBullets();
 		}
 		
 		private function destroy(e:* = null):void
 		{
 			this.haltGame();
+		}
+		
+		public function gameOver():void
+		{
+			Main.instance.gotoEnd();
 		}
 		
 		public static function degToRad(deg:Number):Number

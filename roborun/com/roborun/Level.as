@@ -26,7 +26,7 @@
 			
 			if(Player.instance.gy > BOTTOM_WALL)
 			{
-				var ydiff:Number = this.stage.stageHeight - BOTTOM_WALL - Player.instance.gy;
+				var ydiff:Number = Game.STAGE_BOTTOM - BOTTOM_WALL - Player.instance.gy;
 				this.y += ydiff;
 			}
 		}

@@ -1,6 +1,7 @@
 ﻿package com.roborun
 {
 	import flash.display.Sprite;
+	import com.roborun.characters.Enemy;
 	
 	public class Bullet extends Character
 	{
@@ -41,6 +42,10 @@
 					this.destroy();
 					break;
 				}
+			}
+			if(Enemy.hitAnEnemy(this))
+			{
+				this.destroy();
 			}
 		}
 		
