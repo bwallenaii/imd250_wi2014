@@ -8,6 +8,8 @@
 	import com.roborun.characters.*;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 	
 	public class Game extends Sprite
 	{
@@ -18,12 +20,17 @@
 		private static var _instance:Game;
 		
 		private var _level:Level;
+		private var levelNum:int = 1;
+		private var timer:Timer;
+		private var timeAmount:int = 90;
 		
 		public function Game():void
 		{
 			_instance = this;
 			this.addEventListener(Event.ADDED_TO_STAGE, this.ready);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, this.destroy);
+			this.timer = new Timer(1000);
+			this.timer.addEventListener(TimerEvent.TIMER, this.tick);
 		}
 		
 		public function ready(e:* = null):void
@@ -95,7 +102,20 @@
 		
 		public function loadLevel():void
 		{
-			this._level = new Level1();
+			switch(this.levelNum)
+			{
+				case 1:
+					this._level = new Level1();
+				break;
+				case 2:
+					this._level = new Level2();
+				break;
+			default:
+					this.gameOver();
+					return;
+				break;
+			}
+			
 			this.levelContainer.addChild(this._level);
 			this.startGame();
 		}
@@ -103,11 +123,14 @@
 		public function startGame(e:* = null):void
 		{
 			this.addEventListener(Event.ENTER_FRAME, this.run);
+			this.timeOut.text = this.timeToString(this.timeAmount);
+			this.timer.start();
 		}
 		
 		public function haltGame(e:* = null):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, this.run);
+			this.timer.stop();
 		}
 		
 		public function run(e:* = null):void
@@ -117,6 +140,39 @@
 			this.level.run();
 			Enemy.runEnemies();
 			Bullet.runBullets();
+		}
+		
+		public function nextLevel():void
+		{
+			this.levelContainer.removeChild(this.level);
+			this.levelNum++;
+			this.loadLevel();
+		}
+		
+		public function tick(e:TimerEvent):void
+		{
+			this.timeAmount--;
+			
+			this.timeOut.text = this.timeToString(this.timeAmount);
+			if (this.timeAmount <= 0)
+			{
+				this.gameOver();
+			}
+		}
+		
+		public function timeToString(secnds:int):String
+		{
+			var seconds:int = secnds;
+			var minutes:int = Math.floor(seconds / 60);
+			seconds = seconds - (minutes * 60);
+			var secString:String = seconds.toString();
+			
+			if (secString.length < 2)
+			{
+				secString = "0" + secString;
+			}
+			
+			return minutes.toString() + ":" + secString;
 		}
 		
 		private function destroy(e:* = null):void

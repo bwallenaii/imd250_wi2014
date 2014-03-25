@@ -1,5 +1,6 @@
 ﻿package com.roborun
 {
+	import com.roborun.weapons.Spread;
 	import flash.display.Sprite;
 	import com.roborun.characters.Player;
 	
@@ -9,7 +10,7 @@
 		
 		public function CharacterArm():void
 		{
-			this._weapon = new Weapon();
+			this._weapon = new Spread();
 		}
 		
 		public function run():void

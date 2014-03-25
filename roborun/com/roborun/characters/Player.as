@@ -110,6 +110,18 @@
 			{
 				this.alpha = 1;
 			}
+			this.checkExits();
+		}
+		
+		private function checkExits():void
+		{
+			for (var i:uint = 0; i < Exit.exits.length;++i)
+			{
+				if (this.body.hitTestObject(Exit.exits[i]))
+				{
+					Game.instance.nextLevel();
+				}
+			}
 		}
 		
 		private function flipGravity()

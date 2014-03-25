@@ -1,6 +1,7 @@
 ﻿package com.roborun.characters
 {
 	import com.roborun.Character;
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import com.roborun.Sensor;
 	import com.roborun.Floor;
@@ -23,7 +24,7 @@
 			this.addEventListener(Event.REMOVED_FROM_STAGE, this.destroy);
 		}
 		
-		protected function setup()
+		protected function setup():void
 		{
 			this.vx = -this.speed;
 			this.puppet.scaleX = -1;
@@ -113,13 +114,18 @@
 		{
 			for(var i:uint = 0; i < enemies.length;++i)
 			{
-				if(enemies[i].onStage && bullet.hitTestObject(enemies[i].body))
+				if(enemies[i].onStage && enemies[i].didHitMe(bullet))
 				{
 					enemies[i].attacked(bullet);
 					return true;
 				}
 			}
 			return false;
+		}
+		
+		public function didHitMe(obj:DisplayObject):Boolean
+		{
+			return obj.hitTestObject(this.body);
 		}
 		
 		public function get leftFoot():Sensor
